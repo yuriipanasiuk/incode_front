@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { RootState, LoginCredential, RegisterCredential } from '../type/types';
+import { LoginCredential, RegisterCredential } from '../type/types';
 
 export const instance = axios.create({
   baseURL: 'http://localhost:3001/auth',
@@ -16,20 +16,22 @@ const setToken = (token?: string) => {
 instance.interceptors.response.use(
   response => response,
   async error => {
-    if (error.response.status === 401) {
-      const refreshToken = localStorage.getItem('refreshToken');
+    if (error.response.status === 401 || error.response.status === 500) {
       try {
+        const refreshToken = localStorage.getItem('refreshToken');
+
+        if (!refreshToken) {
+          return;
+        }
+
         const { data } = await instance.post('/refresh', { refreshToken });
 
         setToken(data.accessToken);
-        localStorage.setItem('refreshToken', data.refreshToken);
-
         return instance(error.config);
       } catch (error) {
         return Promise.reject(error);
       }
     }
-
     return Promise.reject(error);
   }
 );
@@ -72,24 +74,16 @@ export const logout = createAsyncThunk('auth/logout', async (_, thunkApi) => {
   try {
     const res = await instance.post('/logout');
     setToken();
+    localStorage.removeItem('refreshToken');
+
     return res.data;
   } catch (error: unknown) {
     if (error instanceof Error) return thunkApi.rejectWithValue(error.message);
   }
 });
 
-export const refreshUser = createAsyncThunk<
-  ReturnType<typeof instance.get>,
-  void,
-  { state: RootState }
->('auth/refresh', async (_, thunkApi) => {
-  const { accessToken } = thunkApi.getState().auth;
-  if (!accessToken) {
-    return thunkApi.rejectWithValue('No valid token');
-  }
-
+export const currentUser = createAsyncThunk('auth/current', async (_, thunkApi) => {
   try {
-    setToken(accessToken);
     const res = await instance.get('/current');
     return res.data;
   } catch (error: unknown) {

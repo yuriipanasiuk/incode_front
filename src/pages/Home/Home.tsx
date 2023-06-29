@@ -3,9 +3,17 @@ import HomeLayout from '../../components/HomeLayout/HomeLayout';
 import Logo from '../../components/Logo/Logo';
 import decorImg from '../../assets/Decor.png';
 import image from '../../assets/Image.png';
+import { useAppDispatch } from '../../hooks/authHook';
+import { logout } from '../../redux/operations';
+
 import * as Styled from './Home.styled';
 
 const Home = () => {
+  const dispatch = useAppDispatch();
+  const handleClich = () => {
+    dispatch(logout());
+  };
+
   return (
     <HomeLayout>
       <HomeContainer>
@@ -21,7 +29,9 @@ const Home = () => {
               result of your work
             </Styled.Text>
           </Styled.TextWtaper>
-          <Styled.Button type="button">Log Out</Styled.Button>
+          <Styled.Button type="button" onClick={handleClich}>
+            Log Out
+          </Styled.Button>
           <Styled.Image src={image} alt="image" />
         </Styled.Container>
       </HomeContainer>
