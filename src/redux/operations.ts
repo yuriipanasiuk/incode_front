@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { LoginCredential, RegisterCredential } from '../type/types';
 
 export const instance = axios.create({
-  baseURL: 'http://localhost:3001/auth',
+  baseURL: 'https://incode.onrender.com/auth',
 });
 
 const setToken = (token?: string) => {
