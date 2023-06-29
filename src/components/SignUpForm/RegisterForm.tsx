@@ -5,8 +5,10 @@ import FormContainer from '../FormContainer/FormContainer';
 import FormTitle from '../FormTitle/FormTitle';
 import { IRegister } from '../../type/types';
 import { registerValidation } from '../../utils/registerValidation';
-import * as Styled from './RegisterFrom.styled';
 import Logo from '../Logo/Logo';
+import { useAppDispatch } from '../../hooks/authHook';
+import { register } from '../../redux/operations';
+import * as Styled from './RegisterForm.styled';
 
 const initialValue = {
   fullName: '',
@@ -21,12 +23,14 @@ const RegisterForm = () => {
   const [inputType, setInputType] = useState<boolean>(true);
   const [inputConfirmType, setInputConfirmType] = useState<boolean>(true);
 
+  const dispatch = useAppDispatch();
+
   const handleSubmit = async (values: IRegister, { resetForm }: FormikHelpers<IRegister>) => {
     if (!values) {
       return;
     }
 
-    console.log(values);
+    dispatch(register(values));
 
     resetForm();
   };

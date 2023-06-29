@@ -5,8 +5,11 @@ import FormContainer from '../FormContainer/FormContainer';
 import FormTitle from '../FormTitle/FormTitle';
 import { ILogin } from '../../type/types';
 import { loginValidation } from '../../utils/loginValidation';
-import * as Styled from './LoginForm.styled';
+import { useAppDispatch } from '../../hooks/authHook';
+import { login } from '../../redux/operations';
 import Logo from '../Logo/Logo';
+
+import * as Styled from './LoginForm.styled';
 
 const initialValue = {
   userName: '',
@@ -17,13 +20,13 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [inputType, setInputType] = useState<boolean>(true);
 
+  const dispatch = useAppDispatch();
+
   const handleSubmit = async (values: ILogin, { resetForm }: FormikHelpers<ILogin>) => {
     if (!values) {
       return;
     }
-
-    console.log(values);
-
+    dispatch(login(values));
     resetForm();
   };
 
