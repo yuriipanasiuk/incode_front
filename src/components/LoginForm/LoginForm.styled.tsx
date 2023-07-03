@@ -13,6 +13,7 @@ export const Input = styled(Field)`
   border: none;
   outline: none;
   border-bottom: 1px solid #ffffff;
+  color: #ffffff;
   background-color: transparent;
   font-size: 16px;
   line-height: 1.55;

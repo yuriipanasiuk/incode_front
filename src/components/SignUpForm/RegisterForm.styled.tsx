@@ -16,6 +16,7 @@ export const Input = styled(Field)`
   background-color: transparent;
   font-size: 16px;
   line-height: 1.55;
+  color: #ffffff;
 `;
 
 export const Button = styled('button')`
