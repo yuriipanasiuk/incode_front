@@ -22,11 +22,12 @@ const LoginForm = () => {
 
   const dispatch = useAppDispatch();
 
-  const handleSubmit = async (values: ILogin, { resetForm }: FormikHelpers<ILogin>) => {
+  const handleSubmit = (values: ILogin, { resetForm }: FormikHelpers<ILogin>) => {
     if (!values) {
       return;
     }
     dispatch(login(values));
+
     resetForm();
   };
 

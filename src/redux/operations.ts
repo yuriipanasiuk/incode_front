@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { LoginCredential, RegisterCredential } from '../type/types';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const instance = axios.create({
   baseURL: 'https://incode.onrender.com/auth',
@@ -60,9 +62,13 @@ export const login = createAsyncThunk(
         userName: credential.userName,
         password: credential.password,
       });
+
+      if (!res) {
+        toast.error('User name or password is wrong!');
+      }
+
       setToken(res.data.accessToken);
       localStorage.setItem('refreshToken', res.data.refreshToken);
-
       return res.data;
     } catch (error: unknown) {
       if (error instanceof Error) return thunkApi.rejectWithValue(error.message);

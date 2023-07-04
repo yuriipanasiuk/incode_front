@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 import App from './components/App.tsx';
 import { store } from './redux/store.ts';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -14,6 +15,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <PersistGate loading={null} persistor={persistor}>
         <BrowserRouter>
           <App />
+          <ToastContainer autoClose={3000} theme="light" />
         </BrowserRouter>
       </PersistGate>
     </Provider>
